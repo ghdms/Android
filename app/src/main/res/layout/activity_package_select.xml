@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/gradient_background"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="30dp"
+    android:gravity="center"
+    tools:context=".Activity.PackageSelectActivity">
+
+    <TextView
+        style="@style/textBasic"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="데이트 계획 창입니다."
+        android:textSize="24sp"/>
+
+    <Button
+        android:background="@drawable/button_custom"
+        android:textColor="@color/btnInner"
+        android:id="@+id/package1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="카페"
+        android:layout_margin="10dp"
+        android:onClick="mOnClick"/>
+    <Button
+        android:background="@drawable/button_custom"
+        android:textColor="@color/btnInner"
+        android:id="@+id/package2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="카페 + 식사"
+        android:layout_margin="10dp"
+        android:onClick="mOnClick" />
+
+    <Button
+        android:background="@drawable/button_custom"
+        android:textColor="@color/btnInner"
+        android:id="@+id/package3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="카페 + 식사 + 영화"
+        android:layout_margin="10dp"
+        android:onClick="mOnClick"/>
+
+    <Button
+        android:background="@drawable/button_custom"
+        android:textColor="@color/btnInner"
+        android:id="@+id/package4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="카페 + 식사 + 영화 + 주점"
+        android:layout_margin="10dp"
+        android:onClick="mOnClick"/>
+
+</LinearLayout>

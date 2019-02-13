@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:background="@drawable/gradient_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="한줄 소개"
+        style="@style/textBasic"/>
+
+    <EditText
+        android:id="@+id/updateInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="한줄로 자신을 표현해주세요"/>
+</LinearLayout>

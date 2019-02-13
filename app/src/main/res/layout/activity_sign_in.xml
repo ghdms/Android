@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:weightSum="9"
+    tools:context=".Activity.SignInActivity">
+
+    <TextView
+        style="@style/textBasic"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="회원가입"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4">
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="4">
+
+        <TextView
+            style="@style/textBasic"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID : " />
+
+        <EditText
+            android:id="@+id/newID"
+            style="@style/editTextBasic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_columnSpan="2"
+            android:ems="5"
+            android:hint="input id"
+            android:inputType="text"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/btnDoubleCheck"
+            style="@style/btnBasic"
+            android:layout_columnSpan="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="중복확인"
+            android:textColor="@color/btnInner" />
+
+        <TextView
+            style="@style/textBasic"
+            android:layout_gravity="right"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PW : " />
+
+        <EditText
+            android:id="@+id/newPW"
+            style="@style/editTextBasic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:layout_columnSpan="3"
+            android:ems="10"
+            android:hint="input pw"
+            android:inputType="textPassword"
+            android:singleLine="true" />
+
+
+        <TextView
+            style="@style/textBasic"
+            android:layout_gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:text="카카오톡 ID : " />
+
+        <EditText
+            android:id="@+id/newNAME"
+            style="@style/editTextBasic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="1"
+            android:layout_columnSpan="3"
+            android:ems="10"
+            android:hint="input Name"
+            android:inputType="text"
+            android:singleLine="true" />
+
+        <TextView
+            style="@style/textBasic"
+            android:layout_gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:layout_column="0"
+            android:text="성별 : " />
+
+        <RadioGroup
+            android:id="@+id/radioG1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioB1"
+                style="@style/textBasic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="mOnClick"
+                android:text="남" />
+
+            <RadioButton
+                android:id="@+id/radioB2"
+                style="@style/textBasic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="mOnClick"
+                android:text="여" />
+        </RadioGroup>
+
+        <TextView
+            style="@style/textBasic"
+            android:layout_gravity="right"
+            android:layout_row="4"
+            android:layout_column="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="한 줄 소개 : " />
+
+        <EditText
+            android:id="@+id/editIntro"
+            style="@style/editTextBasic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="4"
+            android:layout_column="1"
+            android:layout_columnSpan="3"
+            android:ems="10"
+            android:hint="input intro"
+            android:inputType="text"
+            android:singleLine="true"
+            android:maxLength="15"/>
+
+    </GridLayout>
+
+    <Button
+        android:id="@+id/btnRegis"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="4"
+        android:background="@drawable/button_custom"
+        android:text="사진 등록하기"
+        android:textColor="@color/btnInner" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:id="@+id/profileView"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom">
+
+        <Button
+            android:id="@+id/btnSignIn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_custom"
+            android:text="회원가입"
+            android:textColor="@color/btnInner" />
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_custom"
+            android:text="뒤로가기"
+            android:textColor="@color/btnInner" />
+
+    </LinearLayout>
+
+</LinearLayout>

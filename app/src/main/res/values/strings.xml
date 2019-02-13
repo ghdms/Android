@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">연서복</string>
+    <string name="tab_text_1">매칭</string>
+    <string name="tab_text_2">전적</string>
+    <string name="tab_text_3">일정관리</string>
+</resources>

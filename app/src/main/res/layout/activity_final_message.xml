@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/gradient_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.FinalMessageActivity">
+
+
+    <TextView
+        style="@style/textBasic"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="데이트 신청서"
+        android:textSize="24sp"/>
+    <TextView
+        style="@style/textBasic"
+        android:layout_margin="20dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:id="@+id/textFinal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:background="@drawable/button_custom"
+            android:textColor="@color/btnInner"
+            android:layout_margin="4dp"
+            android:id="@+id/btnUpdate"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="수정하기"/>
+        <Button
+            android:background="@drawable/button_custom"
+            android:textColor="@color/btnInner"
+            android:layout_margin="4dp"
+            android:id="@+id/btnBack"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="뒤로가기"/>
+
+    </LinearLayout>
+    <Button
+        android:background="@drawable/button_custom"
+        android:textColor="@color/btnInner"
+        android:layout_margin="10dp"
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="데이트신청"/>
+
+
+</LinearLayout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.dbconnection">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".Activity.MainActivity" />
+        <activity android:name=".Activity.DatePickActivity" />
+        <activity android:name=".Activity.FinalMessageActivity" />
+        <activity android:name=".Activity.LoginSplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Fragment.MailboxActivity"
+            android:theme="@style/Theme.AppCompat" />
+        <activity android:name=".Activity.PackageDetailsActivity" />
+        <activity android:name=".Activity.PackageSelectActivity" />
+        <activity android:name=".Fragment.RandomMatchActivity" />
+        <activity android:name=".Activity.SignInActivity" />
+
+        <service
+            android:name=".MyService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".Fragment.MyInformation" />
+        <activity android:name=".Fragment.Station" />
+        <activity android:name=".Fragment.YesOrNo" />
+        <activity android:name=".Fragment.ScheduleManagement" />
+        <activity android:name=".Activity.SetImageActivity"></activity>
+    </application>
+
+</manifest>
