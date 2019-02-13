@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -15,7 +16,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,9 +53,8 @@ public class MyInformation extends Fragment {
     private Button btnUpdateUserImage, btnUpdateUserInfo, btnUpdateService;
     private TextView ID, KAKAO, SEX, TEXT, SERVICE;
     private ImageView imageView;
-    private String mUserInfo;
 
-    String cur_ID, cur_SEX;
+    String cur_ID, cur_SEX, cur_KAKAO, cur_INTRO;
     Bitmap bmImg;
     String PATH;
 
@@ -82,23 +81,26 @@ public class MyInformation extends Fragment {
 
         ActivityCompat.requestPermissions( getActivity(), REQUIRED_PERMISSIONS, 0);
 
-        final Intent get = getActivity().getIntent();
-
         changing_intro = false;
         cur_ID = getArguments().getString("myId");
         cur_SEX = getArguments().getString("SEX");
+        cur_KAKAO = getArguments().getString("KAKAO");
+        cur_INTRO = IpAddress.getCur_INTRO();
 
         btnUpdateUserImage = (Button) rootView.findViewById(R.id.change_image);
         btnUpdateUserInfo = (Button) rootView.findViewById(R.id.change_intro);
         btnUpdateService = (Button) rootView.findViewById(R.id.change_service);
 
         ID = (TextView) rootView.findViewById(R.id.my_ID);
-        KAKAO = (TextView) rootView.findViewById(R.id.my_KAKAO);
         SEX = (TextView) rootView.findViewById(R.id.my_SEX);
+        KAKAO = (TextView) rootView.findViewById(R.id.my_KAKAO);
         TEXT = (TextView) rootView.findViewById(R.id.my_INTRO);
         SERVICE = (TextView) rootView.findViewById(R.id.my_SERVICE);
 
-        getData("http://" + IP + "/mp/MyInfo.php?ID=" + cur_ID);
+        ID.setText("ID : " + cur_ID);
+        SEX.setText("성별 : " + cur_SEX);
+        KAKAO.setText("카카오톡 ID : " + cur_KAKAO);
+        TEXT.setText("한줄 소개 : " + cur_INTRO);
 
         imageView = (ImageView)rootView.findViewById(R.id.imageView);
 
@@ -109,7 +111,6 @@ public class MyInformation extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getContext(),SetImageActivity.class);
-
                 startActivityForResult(intent, 1001);
             }
         });
@@ -125,10 +126,11 @@ public class MyInformation extends Fragment {
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        mUserInfo = mEdit.getText().toString();
-                        TEXT.setText("한 줄 소개 : " + mUserInfo);
+                        cur_INTRO = mEdit.getText().toString();
+                        IpAddress.setCur_INTRO(cur_INTRO);
+                        TEXT.setText("한 줄 소개 : " + cur_INTRO);
                         changing_intro = true;
-                        getData("http://" + IP + "/mp/ChangeIntro.php?ID=" + cur_ID + "&INTRO=" + mUserInfo);
+                        getData("http://" + IP + "/mp/ChangeIntro.php?ID=" + cur_ID + "&INTRO=" + cur_INTRO);
                     }
                 });
                 builder.show();

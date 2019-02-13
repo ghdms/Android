@@ -5,15 +5,14 @@ import android.app.ActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.widget.Toast;
 
 import com.example.dbconnection.MyService;
 import com.example.dbconnection.R;
@@ -25,7 +24,7 @@ public class Station extends AppCompatActivity {
     private RandomMatchActivity randomMatch;
     private MailboxActivity mailboxActivity;
     private MyInformation myInformation;
-    private String cur_ID, cur_SEX, cur_KAKAO;
+    private String cur_ID, cur_SEX, cur_KAKAO, cur_INTRO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +35,7 @@ public class Station extends AppCompatActivity {
         cur_ID = get.getStringExtra("ID");
         cur_SEX = get.getStringExtra("SEX");
         cur_KAKAO = get.getStringExtra("KAKAO");
+        cur_INTRO = get.getStringExtra("INTRO");
 
         //fragment를 위한 생성자 생성
         scheduleManagement = new ScheduleManagement();
@@ -89,8 +89,9 @@ public class Station extends AppCompatActivity {
 
                 Bundle bundle = new Bundle();
                 bundle.putString("myId",cur_ID);
-                bundle.putString("KAKAO", cur_KAKAO);
                 bundle.putString("SEX",cur_SEX);
+                bundle.putString("KAKAO", cur_KAKAO);
+                bundle.putString("INTRO", cur_INTRO);
                 bundle.putString("MODE",mode);
                 selected.setArguments(bundle);
                 Log.d("test","mode : " + mode);

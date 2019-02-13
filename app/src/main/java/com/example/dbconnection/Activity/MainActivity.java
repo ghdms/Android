@@ -1,20 +1,18 @@
 package com.example.dbconnection.Activity;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.example.dbconnection.IpAddress;
-import com.example.dbconnection.MyService;
-import com.example.dbconnection.R;
+
 import com.example.dbconnection.Fragment.Station;
+import com.example.dbconnection.IpAddress;
+import com.example.dbconnection.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,11 +32,12 @@ public class MainActivity extends Activity {
     private static final String TAG_PD = "PASSWORD";
     private static final String TAG_KAKAO = "NAME";
     private static final String TAG_SEX = "SEX";
+    private static final String TAG_INTRO = "INTRO";
 
     private Button signIn_;
     private Button logIn_;
     private EditText userID, userPD;
-    private String id, pd, sex, kakao;
+    private String id, pd, sex, kakao, intro;
     String autoID, autoPD;
 
     JSONArray peoples = null;
@@ -90,11 +89,15 @@ public class MainActivity extends Activity {
             pd = autoPD;
             kakao = auto.getString("inputKA", null);
             sex = auto.getString("inputSEX", null);
+            intro = auto.getString("inputINTRO", null);
+            IpAddress.setCur_INTRO(intro);
+
             Toast.makeText(MainActivity.this, autoID +"님 자동 로그인", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), Station.class);
             intent.putExtra("ID", id);
             intent.putExtra("KAKAO", kakao);
             intent.putExtra("SEX", sex);
+            intent.putExtra("INTRO", intro);
             intent.setAction("MAIN");
             startActivity(intent.setFlags(intent.FLAG_ACTIVITY_CLEAR_TOP | intent.FLAG_ACTIVITY_SINGLE_TOP));
         }
@@ -111,23 +114,27 @@ public class MainActivity extends Activity {
                 String dbpd = c.getString(TAG_PD);
                 kakao = c.getString(TAG_KAKAO);
                 sex = c.getString(TAG_SEX);
+                intro = c.getString(TAG_INTRO);
 
                 if (id.equals(dbid) && pd.equals(dbpd)) {
                     if(autoID == null && autoPD == null)
                     {
                         SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
                         SharedPreferences.Editor editor = auto.edit();
-                        editor.putString("inputID", userID.getText().toString());
-                        editor.putString("inputPD", userPD.getText().toString());
+                        editor.putString("inputID", id);
+                        editor.putString("inputPD", pd);
                         editor.putString("inputKA", kakao);
                         editor.putString("inputSEX", sex);
+                        editor.putString("inputINTRO", intro);
                         editor.commit();
                     }
 
+                    IpAddress.setCur_INTRO(intro);
                     Intent intent = new Intent(getApplicationContext(), Station.class);
                     intent.putExtra("ID", id);
                     intent.putExtra("KAKAO", kakao);
                     intent.putExtra("SEX", sex);
+                    intent.putExtra("INTRO", intro);
                     intent.setAction("MAIN");
                     startActivity(intent.setFlags(intent.FLAG_ACTIVITY_CLEAR_TOP | intent.FLAG_ACTIVITY_SINGLE_TOP));
                 } else if (dbid.equals("") || dbpd.equals("") || kakao.equals("") || sex.equals("")) {

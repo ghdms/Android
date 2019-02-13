@@ -5,6 +5,7 @@ public class IpAddress {
     public static final String PORT = "27922";
     public static final String FTPIP = "192.168.56.1";
     public static final int FTPPORT = 27925;
+    public static String cur_INTRO = "";
 
     public static String getIP()
     {
@@ -24,5 +25,15 @@ public class IpAddress {
     public static int getFTPPORT()
     {
         return FTPPORT;
+    }
+
+    public static void setCur_INTRO(String intro)
+    {
+        cur_INTRO = intro;
+    }
+
+    public static String getCur_INTRO()
+    {
+        return cur_INTRO;
     }
 }
