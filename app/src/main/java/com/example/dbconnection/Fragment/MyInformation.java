@@ -2,6 +2,7 @@ package com.example.dbconnection.Fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -50,7 +51,7 @@ public class MyInformation extends Fragment {
     private String IP = IpAddress.getIP(); //"61.255.8.214:27922";
 
     private Button btnUpdateUserImage, btnUpdateUserInfo, btnUpdateService;
-    private TextView ID, KAKAO, SEX, TEXT;
+    private TextView ID, KAKAO, SEX, TEXT, SERVICE;
     private ImageView imageView;
     private String mUserInfo;
 
@@ -95,6 +96,7 @@ public class MyInformation extends Fragment {
         KAKAO = (TextView) rootView.findViewById(R.id.my_KAKAO);
         SEX = (TextView) rootView.findViewById(R.id.my_SEX);
         TEXT = (TextView) rootView.findViewById(R.id.my_INTRO);
+        SERVICE = (TextView) rootView.findViewById(R.id.my_SERVICE);
 
         getData("http://" + IP + "/mp/MyInfo.php?ID=" + cur_ID);
 
@@ -147,6 +149,7 @@ public class MyInformation extends Fragment {
                                 Intent intent_service_start = new Intent(getContext(), MyService.class);
                                 intent_service_start.putExtra("thID", cur_ID);
                                 rootView.getContext().startService(intent_service_start.setFlags(intent_service_start.FLAG_ACTIVITY_CLEAR_TOP | intent_service_start.FLAG_ACTIVITY_SINGLE_TOP));
+                                isServiceRunningCheck(rootView);
                             }
                         });
                 builder.setNegativeButton("거부",
@@ -154,12 +157,14 @@ public class MyInformation extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 Toast.makeText(getContext(), "쪽지 알람 수신을 중지합니다.", Toast.LENGTH_LONG).show();
                                 rootView.getContext().stopService(new Intent(getContext(), MyService.class));
+                                isServiceRunningCheck(rootView);
                             }
                         });
                 builder.show();
             }
         });
 
+        isServiceRunningCheck(rootView);
         return rootView;
     }
 
@@ -237,7 +242,7 @@ public class MyInformation extends Fragment {
                 ID.setText("ID : " + c.getString(TAG_ID));
                 KAKAO.setText("카카오톡 ID : " + c.getString(TAG_NAME));
                 SEX.setText("성별 : " + c.getString(TAG_SEX));
-                TEXT.setText("한 줄 소개 : " + c.getString(TAG_INTRO));
+                TEXT.setText("한줄 소개 : " + c.getString(TAG_INTRO));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -308,5 +313,21 @@ public class MyInformation extends Fragment {
         }
         Log.d("Connect", "Connect false");
         return false;
+    }
+
+    public void isServiceRunningCheck(View view) {
+        boolean chk = false;
+        ActivityManager manager = (ActivityManager) getContext().getSystemService(Activity.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if ("com.example.dbconnection.MyService".equals(service.service.getClassName())) {
+                SERVICE.setText("쪽지 알람 서비스 : 수신");
+                chk = true;
+            }
+        }
+        if(!chk)
+        {
+            SERVICE.setText("쪽지 알람 서비스 : 거부");
+        }
+        view.invalidate();
     }
 }
