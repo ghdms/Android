@@ -3,7 +3,6 @@ package com.example.dbconnection;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -13,9 +12,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
-
-import com.example.dbconnection.Activity.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -70,7 +66,7 @@ public class MyService extends Service
 
         builder = new NotificationCompat.Builder(this, "my_channel_01")
                 .setSmallIcon(R.drawable.title)
-                .setContentTitle("연서복 쪽지")
+                .setContentTitle("연애에 서툰 복학생에게 쪽지가?")
                 .setDefaults(Notification.DEFAULT_VIBRATE)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true);
@@ -93,12 +89,16 @@ public class MyService extends Service
     class myServiceHandler extends Handler {
         @Override
         public void handleMessage(android.os.Message msg) {
-            //데이터베이스에서 캐치가 되면
-            long NOW = System.currentTimeMillis();
-            SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            Date mDate = new Date(NOW);
-            date = mFormat.format(mDate);
-            getData("http://" + IP + "/mp/lovecall.php?ID=" + cur_ID + "&NOW=" + date);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (Notifi_M.getActiveNotifications().length == 0) { //이미 목록에 있으면 알림 x
+                    //데이터베이스에서 캐치가 되면
+                    long NOW = System.currentTimeMillis();
+                    SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    Date mDate = new Date(NOW);
+                    date = mFormat.format(mDate);
+                    getData("http://" + IP + "/mp/lovecall.php?ID=" + cur_ID + "&NOW=" + date);
+                }
+            }
         }
     };
 
@@ -110,13 +110,8 @@ public class MyService extends Service
 
             if(peoples.length() > 0)
             {
-                builder.setContentText(peoples.length() + "개의 쪽지");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if(Notifi_M.getActiveNotifications().length == 0)
-                    {
-                        Notifi_M.notify(0, builder.build());
-                    }
-                }
+                builder.setContentText(peoples.length() + "개의 쪽지가 있습니다.");
+                Notifi_M.notify(0, builder.build());
             }
         } catch (Exception e) {
             e.printStackTrace();

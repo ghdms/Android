@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.dbconnection.IpAddress;
 import com.example.dbconnection.R;
+import com.example.dbconnection.TAG_;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,9 +38,6 @@ public class PackageDetailsActivity extends AppCompatActivity {
     private String myId, partnerId, cur_SEX, cur_KAKAO;
 
     String myJSON;
-
-    private static final String TAG_RESULTS = "result";
-    private static final String TAG_NAME = "NAME";
     JSONArray peoples = null;
     ArrayList<String> store_name;
 
@@ -421,12 +419,12 @@ public class PackageDetailsActivity extends AppCompatActivity {
         store_name.clear();
         try {
             JSONObject jsonObj = new JSONObject(myJSON);
-            peoples = jsonObj.getJSONArray(TAG_RESULTS);
+            peoples = jsonObj.getJSONArray(TAG_.getTagResults());
 
             for (int i = 0; i < peoples.length(); i++)
             {
                 JSONObject c = peoples.getJSONObject(i);
-                String name = c.getString(TAG_NAME);
+                String name = c.getString(TAG_.getTagKakao());
 
                 store_name.add(name);
             }

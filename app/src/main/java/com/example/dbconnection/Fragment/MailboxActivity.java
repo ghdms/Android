@@ -1,6 +1,5 @@
 package com.example.dbconnection.Fragment;
 
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -20,6 +19,7 @@ import com.example.dbconnection.IpAddress;
 import com.example.dbconnection.MailboxAdapter;
 import com.example.dbconnection.MailboxMessage;
 import com.example.dbconnection.R;
+import com.example.dbconnection.TAG_;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,14 +39,9 @@ public class MailboxActivity extends Fragment {
     ListView messages;
     MailboxAdapter mailboxAdapter;
     TextView textView;
-    private String cur_ID, cur_SEX, cur_MODE;
-    String myJSON;
+    private String cur_ID, cur_MODE;
 
-    private static final String TAG_RESULTS = "result";
-    private static final String TAG_ID = "ASK_ID";
-    private static final String TAG_ACK = "ACK_ID";
-    private static final String TAG_MSG = "MESSAGE";
-    private static final String TAG_ANS = "ANSWER";
+    String myJSON;
     JSONArray peoples = null;
 
     ArrayList<MailboxMessage> adapter;
@@ -57,10 +52,9 @@ public class MailboxActivity extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup v = (ViewGroup)inflater.inflate(R.layout.activity_mailbox,container,false);
+        final ViewGroup v = (ViewGroup)inflater.inflate(R.layout.activity_mailbox,container,false);
 
         cur_ID = getArguments().getString("myId");
-        cur_SEX = getArguments().getString("SEX");
         cur_MODE = getArguments().getString("MODE");
 
         messages = (ListView)v.findViewById(R.id.messages);
@@ -83,7 +77,7 @@ public class MailboxActivity extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setTitle("메세지");
+                    builder.setTitle("쪽지");
                     builder.setMessage("당신을 맘에 들어합니다.");
                     selected = (MailboxMessage)(adapterView.getAdapter().getItem(i));
                     builder.setPositiveButton("수락",
@@ -93,20 +87,22 @@ public class MailboxActivity extends Fragment {
                                     String ack_id = cur_ID;
                                     String msg = selected.getADD2();
                                     answer = "ok";
-
                                     answer_query = true;
+
+                                    Toast.makeText(getContext(),"수락 완료",Toast.LENGTH_LONG).show();
                                     getData("http://" + IP + "/mp/answer.php?ASK_ID=" + ask_id + "&ACK_ID=" + ack_id + "&MESSAGE=" + msg + "&ANSWER=" + answer + "&DT=" + date);
                                 }
                             });
-                    builder.setNegativeButton("별로에요",
+                    builder.setNegativeButton("거절",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     String ask_id = selected.getName();
                                     String ack_id = cur_ID;
                                     String msg = selected.getADD2();
                                     answer = "sorry";
-
                                     answer_query = true;
+
+                                    Toast.makeText(getContext(),"거절 완료",Toast.LENGTH_LONG).show();
                                     getData("http://" + IP + "/mp/answer.php?ASK_ID=" + ask_id + "&ACK_ID=" + ack_id + "&MESSAGE=" + msg + "&ANSWER=" + answer + "&DT=" + date);
                                 }
                             });
@@ -122,24 +118,22 @@ public class MailboxActivity extends Fragment {
     {
         try {
             JSONObject jsonObj = new JSONObject(myJSON);
-            peoples = jsonObj.getJSONArray(TAG_RESULTS);
+            peoples = jsonObj.getJSONArray(TAG_.getTagResults());
 
             for (int i = 0; i < peoples.length(); i++)
             {
                 JSONObject c = peoples.getJSONObject(i);
-                String dbid = c.getString(TAG_ID);
+                String dbid = c.getString(TAG_.getTagAsk());
                 if(answer_query)
                 {
                     answer_result = dbid;
                     answer_query = false;
 
-                    Toast.makeText(getContext(), answer, Toast.LENGTH_SHORT).show();
                     break;
                 }
                 MailboxMessage mm;
 
-                String dback, dbmsg, dbans;
-                dbmsg = c.getString(TAG_MSG);
+                String dbmsg = c.getString(TAG_.getTagMsg());
                 mm = new MailboxMessage(dbid, dbmsg, cur_ID);
 
                 adapter.add(mm);
@@ -181,5 +175,4 @@ public class MailboxActivity extends Fragment {
         GetDataJSON g = new GetDataJSON();
         g.execute(url);
     }
-
 }

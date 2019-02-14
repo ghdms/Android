@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,7 @@ import android.widget.Toast;
 import com.example.dbconnection.Activity.PackageSelectActivity;
 import com.example.dbconnection.IpAddress;
 import com.example.dbconnection.R;
+import com.example.dbconnection.TAG_;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,16 +42,12 @@ public class RandomMatchActivity extends Fragment {
 
     private ImageView userPortrait;
     private TextView userName;
-    private Button selectButton, passButton, btnMailbox, btnRecord, btnDate, btnMyInfo;
+    private Button selectButton, passButton;
     private String cur_ID, cur_SEX, cur_KAKAO;
     private ArrayList<PARTNER> Partner;
+    private int partner_idx = 0;
 
     String myJSON;
-
-    private static final String TAG_RESULTS = "result";
-    private static final String TAG_ID = "ID";
-    private static final String TAG_INTRO = "INTRO";
-    private int partner_idx = 0;
     JSONArray peoples = null;
 
     Bitmap bmImg;
@@ -84,7 +80,6 @@ public class RandomMatchActivity extends Fragment {
         cur_ID = get.getStringExtra("ID");
         cur_SEX = get.getStringExtra("SEX");
         cur_KAKAO = get.getStringExtra("KAKAO");
-        Log.d("test",cur_ID + ":: " + cur_SEX + ":: " + cur_KAKAO);
 
         userPortrait = (ImageView) v.findViewById(R.id.user_portrait);
         userName = (TextView) v.findViewById(R.id.user_name);
@@ -115,9 +110,9 @@ public class RandomMatchActivity extends Fragment {
     void show()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("데이트 명세 시작");
-        builder.setMessage("1. 데이트 날짜를 정하세요!\n2. 데이트 장소를 정하세요!\n3. 보내기~! 및 기다리기");
-        builder.setPositiveButton("시작하자",
+        builder.setTitle("데이트 명세서 작성 시작");
+        builder.setMessage("1. 데이트 날짜 정하기\n2. 데이트 장소 정하기\n3. 보내고 기다리기");
+        builder.setPositiveButton("시작!",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getContext(),PackageSelectActivity.class);
@@ -128,7 +123,7 @@ public class RandomMatchActivity extends Fragment {
                         startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | intent.FLAG_ACTIVITY_SINGLE_TOP));
                     }
                 });
-        builder.setNegativeButton("다시생각해볼게요",
+        builder.setNegativeButton("다시 생각해볼게요",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(getContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
@@ -141,13 +136,13 @@ public class RandomMatchActivity extends Fragment {
     {
         try {
             JSONObject jsonObj = new JSONObject(myJSON);
-            peoples = jsonObj.getJSONArray(TAG_RESULTS);
+            peoples = jsonObj.getJSONArray(TAG_.getTagResults());
 
             for (int i = 0; i < peoples.length(); i++)
             {
                 JSONObject c = peoples.getJSONObject(i);
-                String dbid = c.getString(TAG_ID);
-                String dbintro = c.getString(TAG_INTRO);
+                String dbid = c.getString(TAG_.getTagId());
+                String dbintro = c.getString(TAG_.getTagIntro());
 
                 Partner.add(new PARTNER(dbid, dbintro));
                 partner_num++;
@@ -156,6 +151,7 @@ public class RandomMatchActivity extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         int random = (int)(Math.random()*partner_num);
         back init = new back();
         init.execute("http://" + IP + "/mp/image/" + Partner.get(random).getID() + ".jpg");
@@ -187,7 +183,6 @@ public class RandomMatchActivity extends Fragment {
 
             @Override
             protected void onPostExecute(String result) {
-                Log.d("debugging","1 : " + result);
                 myJSON = result;
                 showList();
             }
@@ -199,7 +194,6 @@ public class RandomMatchActivity extends Fragment {
     public class back extends AsyncTask<String, Integer,Bitmap>{
         @Override
         protected Bitmap doInBackground(String... urls) {
-            // TODO Auto-generated method stub
             try
             {
                 URL myFileUrl = new URL(urls[0]);
@@ -221,7 +215,7 @@ public class RandomMatchActivity extends Fragment {
         }
 
         protected void onPostExecute(Bitmap img){
-            //userPortrait.setImageBitmap(bmImg);
+
         }
     }
 
@@ -229,8 +223,6 @@ public class RandomMatchActivity extends Fragment {
     {
         public void handleMessage(Message msg)
         {
-            Log.d("ptest", partner_idx+"");
-
             userName.setText(Partner.get(partner_idx).getINTRO());
             userPortrait.setImageBitmap(bmImg);
             Toast.makeText(getContext(), "pass", Toast.LENGTH_SHORT).show();

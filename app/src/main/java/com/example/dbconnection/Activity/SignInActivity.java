@@ -12,12 +12,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.dbconnection.IpAddress;
 import com.example.dbconnection.R;
+import com.example.dbconnection.TAG_;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -38,8 +37,6 @@ public class SignInActivity extends AppCompatActivity {
     private Button signIn;
     private Button regis_pic;
     private Button btnDbChk;
-    private RadioButton radioButton1, radioButton2;
-    private RadioGroup radioGroup;
 
     private EditText id, pw, name, intro;
     String ID = null;
@@ -49,10 +46,8 @@ public class SignInActivity extends AppCompatActivity {
     String INTRO = null;
     boolean IdCheck;
     boolean IdOk;
-    String myJSON;
-    private static final String TAG_RESULTS = "result";
-    private static final String TAG_ID = "ID";
 
+    String myJSON;
     JSONArray peoples = null;
     Bitmap selPhoto;
     ImageView image;
@@ -75,10 +70,6 @@ public class SignInActivity extends AppCompatActivity {
         pw = (EditText)findViewById(R.id.newPW);
         name = (EditText)findViewById(R.id.newNAME);
         intro = (EditText)findViewById(R.id.editIntro);
-
-        radioGroup = (RadioGroup)findViewById(R.id.radioG1);
-        radioButton1 = (RadioButton)findViewById(R.id.radioB1);
-        radioButton2 = (RadioButton)findViewById(R.id.radioB2);
         image = (ImageView)findViewById(R.id.profileView);
 
         btnDbChk = (Button)findViewById(R.id.btnDoubleCheck);
@@ -220,12 +211,12 @@ public class SignInActivity extends AppCompatActivity {
     {
         try {
             JSONObject jsonObj = new JSONObject(myJSON);
-            peoples = jsonObj.getJSONArray(TAG_RESULTS);
+            peoples = jsonObj.getJSONArray(TAG_.getTagResults());
 
             for (int i = 0; i < peoples.length(); i++)
             {
                 JSONObject c = peoples.getJSONObject(i);
-                String dbid = c.getString(TAG_ID);
+                String dbid = c.getString(TAG_.getTagId());
 
                 if(!IdCheck)
                 {

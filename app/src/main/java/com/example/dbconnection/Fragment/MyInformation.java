@@ -33,9 +33,6 @@ import com.example.dbconnection.R;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -59,13 +56,6 @@ public class MyInformation extends Fragment {
     String PATH;
 
     String myJSON;
-
-    private static final String TAG_RESULTS = "result";
-    private static final String TAG_ID = "ID";
-    private static final String TAG_NAME = "NAME";
-    private static final String TAG_SEX = "SEX";
-    private static final String TAG_INTRO = "INTRO";
-    JSONArray peoples = null;
 
     boolean changing_intro;
 
@@ -232,25 +222,6 @@ public class MyInformation extends Fragment {
         }
     };
 
-    protected void showList()
-    {
-        try {
-            JSONObject jsonObj = new JSONObject(myJSON);
-            peoples = jsonObj.getJSONArray(TAG_RESULTS);
-
-            for (int i = 0; i < peoples.length(); i++)
-            {
-                JSONObject c = peoples.getJSONObject(i);
-                ID.setText("ID : " + c.getString(TAG_ID));
-                KAKAO.setText("카카오톡 ID : " + c.getString(TAG_NAME));
-                SEX.setText("성별 : " + c.getString(TAG_SEX));
-                TEXT.setText("한줄 소개 : " + c.getString(TAG_INTRO));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void getData(String url) {
         class GetDataJSON extends AsyncTask<String, Void, String> {
 
@@ -282,7 +253,6 @@ public class MyInformation extends Fragment {
                 else
                 {
                     myJSON = result;
-                    showList();
                 }
             }
         }

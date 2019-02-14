@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.dbconnection.Fragment.Station;
 import com.example.dbconnection.IpAddress;
 import com.example.dbconnection.R;
+import com.example.dbconnection.TAG_;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,9 +33,6 @@ public class FinalMessageActivity extends AppCompatActivity {
     private TextView final_msg;
     private String myId, partnerId, date, time, cur_SEX, cur_KAKAO, first, cafe, meal, movie, pub, dbmsg;
     String message = "";
-
-    private static final String TAG_RESULTS = "result";
-    private static final String TAG_ID = "ID";
     int temp;
 
     @Override
@@ -117,12 +115,12 @@ public class FinalMessageActivity extends AppCompatActivity {
     {
         try {
             JSONObject jsonObj = new JSONObject(myJSON);
-            peoples = jsonObj.getJSONArray(TAG_RESULTS);
+            peoples = jsonObj.getJSONArray(TAG_.getTagResults());
 
             for (int i = 0; i < peoples.length(); i++)
             {
                 JSONObject c = peoples.getJSONObject(i);
-                String dbid = c.getString(TAG_ID);
+                String dbid = c.getString(TAG_.getTagId());
 
                 if(dbid.equals("true"))
                 {

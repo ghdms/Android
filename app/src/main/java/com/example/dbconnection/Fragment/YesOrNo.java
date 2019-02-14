@@ -15,6 +15,7 @@ import com.example.dbconnection.IpAddress;
 import com.example.dbconnection.MailboxAdapter;
 import com.example.dbconnection.MailboxMessage;
 import com.example.dbconnection.R;
+import com.example.dbconnection.TAG_;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +32,7 @@ import java.util.Date;
 public class YesOrNo extends Fragment {
 
     private String IP = IpAddress.getIP(); //"61.255.8.214:27922";
-    private String cur_ID, cur_SEX, cur_MODE;
+    private String cur_ID, cur_MODE;
     private String myJSON;
     private ListView messages;
     private TextView textView;
@@ -44,7 +45,6 @@ public class YesOrNo extends Fragment {
     private static final String TAG_RESULTS = "result";
     private static final String TAG_ID = "ASK_ID";
     private static final String TAG_ACK = "ACK_ID";
-    private static final String TAG_MSG = "MESSAGE";
     private static final String TAG_ANS = "ANSWER";
 
     @Nullable
@@ -56,7 +56,6 @@ public class YesOrNo extends Fragment {
         textView = (TextView)v.findViewById(R.id.Title);
 
         cur_ID = getArguments().getString("myId");
-        cur_SEX = getArguments().getString("SEX");
         cur_MODE = getArguments().getString("MODE");
 
         long NOW = System.currentTimeMillis();
@@ -117,7 +116,7 @@ public class YesOrNo extends Fragment {
                 String dbid = c.getString(TAG_ID);
                 MailboxMessage mm;
 
-                String dback, dbmsg, dbans;
+                String dback, dbans;
                 dback = c.getString(TAG_ACK);
                 dbans = c.getString(TAG_ANS);
                 mm = new MailboxMessage(dbid, dback, dbans, cur_ID);

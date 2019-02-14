@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.CalendarView;
 
 import com.example.dbconnection.R;
@@ -30,15 +29,11 @@ public class DatePickActivity extends AppCompatActivity {
         cur_SEX = intent.getStringExtra("SEX");
         cur_KAKAO = intent.getStringExtra("KAKAO");
 
-        Log.d("ptest", partnerId);
         datePicker.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
                 Intent intent = new Intent(getApplicationContext(), PackageDetailsActivity.class);
                 intent.putExtra("MODE", "DATE");
-                intent.putExtra("year", year);
-                intent.putExtra("month", month+1);
-                intent.putExtra("day", day);
                 intent.putExtra("id",tmp);
                 intent.putExtra("date", String.valueOf(year) + "-" + String.valueOf(month + 1) + "-" + String.valueOf(day));
                 intent.putExtra("myId",myId);
@@ -61,7 +56,6 @@ public class DatePickActivity extends AppCompatActivity {
         myId = intent.getStringExtra("myId");
         partnerId = intent.getStringExtra("partnerId");
         cur_SEX = intent.getStringExtra("SEX");
-        Log.d("ptest", partnerId);
     }
 
     @Override
@@ -75,6 +69,5 @@ public class DatePickActivity extends AppCompatActivity {
         myId = intent.getStringExtra("myId");
         partnerId = intent.getStringExtra("partnerId");
         cur_SEX = intent.getStringExtra("SEX");
-        Log.d("ptest", partnerId);
     }
 }

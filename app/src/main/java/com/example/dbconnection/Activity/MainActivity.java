@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.dbconnection.Fragment.Station;
 import com.example.dbconnection.IpAddress;
 import com.example.dbconnection.R;
+import com.example.dbconnection.TAG_;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,13 +27,6 @@ import java.net.URL;
 public class MainActivity extends Activity {
     private String IP = IpAddress.getIP(); // "61.255.8.214:27922";
     String myJSON;
-
-    private static final String TAG_RESULTS = "result";
-    private static final String TAG_ID = "ID";
-    private static final String TAG_PD = "PASSWORD";
-    private static final String TAG_KAKAO = "NAME";
-    private static final String TAG_SEX = "SEX";
-    private static final String TAG_INTRO = "INTRO";
 
     private Button signIn_;
     private Button logIn_;
@@ -106,15 +100,15 @@ public class MainActivity extends Activity {
     protected void showList() {
         try {
             JSONObject jsonObj = new JSONObject(myJSON);
-            peoples = jsonObj.getJSONArray(TAG_RESULTS);
+            peoples = jsonObj.getJSONArray(TAG_.getTagResults());
 
             for (int i = 0; i < peoples.length(); i++) {
                 JSONObject c = peoples.getJSONObject(i);
-                String dbid = c.getString(TAG_ID);
-                String dbpd = c.getString(TAG_PD);
-                kakao = c.getString(TAG_KAKAO);
-                sex = c.getString(TAG_SEX);
-                intro = c.getString(TAG_INTRO);
+                String dbid = c.getString(TAG_.getTagId());
+                String dbpd = c.getString(TAG_.getTagPd());
+                kakao = c.getString(TAG_.getTagKakao());
+                sex = c.getString(TAG_.getTagSex());
+                intro = c.getString(TAG_.getTagIntro());
 
                 if (id.equals(dbid) && pd.equals(dbpd)) {
                     if(autoID == null && autoPD == null)

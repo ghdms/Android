@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
-import android.util.Log;
 
 import com.example.dbconnection.R;
 
@@ -49,7 +48,6 @@ public class SetImageActivity extends Activity {
             bm = Bitmap.createScaledBitmap(bm, 160, 96, true);
 
         return bm;
-
     }
 
     @Override
@@ -64,15 +62,14 @@ public class SetImageActivity extends Activity {
                 Cursor cursor = managedQuery(selectedImage, proj, null, null, null);
                 int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToFirst();
+
                 String path = cursor.getString(index);
-                Log.d("Connect", "path : [" + path + "]");
                 intent.putExtra("PATH", path);
 
                 bm = Images.Media.getBitmap(getContentResolver(), data.getData());
                 bm = resize(bm);
                 intent.putExtra("bitmap", bm);
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             setResult(RESULT_OK, intent);
