@@ -1,14 +1,18 @@
 package com.example.dbconnection;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.example.dbconnection.Activity.MainActivity;
@@ -27,20 +31,18 @@ public class MyService extends Service
 {
     private String IP = IpAddress.getIP(); // "61.255.8.214:27922";
 
-    NotificationManager Notifi_M;
     ServiceThread thread;
-    Notification Notifi ;
     String cur_ID = "";
 
     String myJSON;
 
     private static final String TAG_RESULTS = "result";
-    private static final String TAG_ID = "ID";
-    private static final String TAG_PD = "PASSWORD";
-    private static final String TAG_SEX = "SEX";
 
     JSONArray peoples = null;
     String date = "";
+
+    NotificationManager Notifi_M;
+    NotificationCompat.Builder builder;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -49,8 +51,31 @@ public class MyService extends Service
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        cur_ID = intent.getStringExtra("thID");
         Notifi_M = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        String CHANNEL_ID = "my_channel_01";
+        CharSequence name = "my_channel";
+        String Description = "This is my channel";
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
+        {
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+            mChannel.setDescription(Description);
+            mChannel.enableLights(true);
+            mChannel.setLightColor(Color.RED);
+            mChannel.enableVibration(true);
+            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            mChannel.setShowBadge(false);
+            Notifi_M.createNotificationChannel(mChannel);
+        }
+
+        builder = new NotificationCompat.Builder(this, "my_channel_01")
+                .setSmallIcon(R.drawable.title)
+                .setContentTitle("연서복 쪽지")
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true);
+
+        cur_ID = intent.getStringExtra("thID");
         myServiceHandler handler = new myServiceHandler();
         thread = new ServiceThread(handler);
         thread.start();
@@ -68,9 +93,6 @@ public class MyService extends Service
     class myServiceHandler extends Handler {
         @Override
         public void handleMessage(android.os.Message msg) {
-            Intent intent = new Intent(MyService.this, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(MyService.this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
-
             //데이터베이스에서 캐치가 되면
             long NOW = System.currentTimeMillis();
             SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -88,7 +110,13 @@ public class MyService extends Service
 
             if(peoples.length() > 0)
             {
-                Toast.makeText(MyService.this, "쪽지가 도착했습니다.", Toast.LENGTH_SHORT).show();
+                builder.setContentText(peoples.length() + "개의 쪽지");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if(Notifi_M.getActiveNotifications().length == 0)
+                    {
+                        Notifi_M.notify(0, builder.build());
+                    }
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
