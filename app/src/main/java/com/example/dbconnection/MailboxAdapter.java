@@ -43,6 +43,15 @@ public class MailboxAdapter extends BaseAdapter {
         return position;
     }
 
+    public boolean removeItem(int position){
+        if(data.get(position) != null)
+        {
+            data.remove(position);
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null){

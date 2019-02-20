@@ -35,4 +35,9 @@ public class MailboxMessage extends AppCompatActivity {
         this.ADD3 = add3;
         this.MY = my;
     }
+
+    public void setADD2(String a)
+    {
+        this.ADD2 = a;
+    }
 }

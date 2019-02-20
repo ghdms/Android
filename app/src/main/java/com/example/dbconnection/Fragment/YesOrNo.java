@@ -1,5 +1,7 @@
 package com.example.dbconnection.Fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,8 +10,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dbconnection.IpAddress;
 import com.example.dbconnection.MailboxAdapter;
@@ -25,9 +31,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class YesOrNo extends Fragment {
 
@@ -36,20 +40,15 @@ public class YesOrNo extends Fragment {
     private String myJSON;
     private ListView messages;
     private TextView textView;
-    private String date;
     private JSONArray peoples = null;
     MailboxAdapter mailboxAdapter;
 
     ArrayList<MailboxMessage> adapter;
-
-    private static final String TAG_RESULTS = "result";
-    private static final String TAG_ID = "ASK_ID";
-    private static final String TAG_ACK = "ACK_ID";
-    private static final String TAG_ANS = "ANSWER";
+    private MailboxMessage selected;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup v = (ViewGroup)inflater.inflate(R.layout.activity_yes_or_no,container,false);
 
         messages = (ListView)v.findViewById(R.id.messages);
@@ -58,16 +57,42 @@ public class YesOrNo extends Fragment {
         cur_ID = getArguments().getString("myId");
         cur_MODE = getArguments().getString("MODE");
 
-        long NOW = System.currentTimeMillis();
-        SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Date mDate = new Date(NOW);
-        date = mFormat.format(mDate);
         adapter = new ArrayList<>();
 
         if(cur_MODE.equals("record"))
         {
             textView.setText("RECORD");
-            getData("http://" + IP + "/mp/record.php?ID=" + cur_ID + "&NOW=" + date);
+            getData("http://" + IP + "/mp/record.php?ID=" + cur_ID);
+
+            messages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    selected = (MailboxMessage)(adapterView.getAdapter().getItem(i));
+                    if(selected.getADD3().equals("ok") && selected.getADD().equals(cur_ID))
+                    {
+                        final View layout = inflater.inflate(R.layout.ratingbar, null);
+                        final float[] tmp = {3};
+                        RatingBar rb = (RatingBar) layout.findViewById(R.id.ratingBar);
+                        rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                            @Override
+                            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                                tmp[0] = rating;
+                                //update couple set rating = tmp[0] where ASK_ID = selected.getName() and ACK_ID = cur_ID and message = selected.getADD2() and answer = 'ok' and dt < date;
+                            }
+                        });
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setView(layout);
+                        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(getContext(), tmp[0] + "", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        builder.show();
+                    }
+                }
+            });
         }
 
         return v;
@@ -108,18 +133,20 @@ public class YesOrNo extends Fragment {
     {
         try {
             JSONObject jsonObj = new JSONObject(myJSON);
-            peoples = jsonObj.getJSONArray(TAG_RESULTS);
+            peoples = jsonObj.getJSONArray(TAG_.getTagResults());
 
             for (int i = 0; i < peoples.length(); i++)
             {
                 JSONObject c = peoples.getJSONObject(i);
-                String dbid = c.getString(TAG_ID);
                 MailboxMessage mm;
 
-                String dback, dbans;
-                dback = c.getString(TAG_ACK);
-                dbans = c.getString(TAG_ANS);
+                String dbid = c.getString(TAG_.getTagAsk());
+                String dback = c.getString(TAG_.getTagAck());
+                String dbans = c.getString(TAG_.getTagAns());
                 mm = new MailboxMessage(dbid, dback, dbans, cur_ID);
+
+                String dbmsg = c.getString(TAG_.getTagMsg());
+                mm.setADD2(dbmsg);
 
                 adapter.add(mm);
             }

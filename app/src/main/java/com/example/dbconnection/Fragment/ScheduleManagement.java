@@ -25,9 +25,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class ScheduleManagement extends Fragment {
 
@@ -36,7 +34,6 @@ public class ScheduleManagement extends Fragment {
     private String myJSON;
     private ListView messages;
     private TextView textView;
-    private String date;
     private JSONArray peoples = null;
     MailboxAdapter mailboxAdapter;
 
@@ -53,16 +50,12 @@ public class ScheduleManagement extends Fragment {
         cur_ID = getArguments().getString("myId");
         cur_MODE = getArguments().getString("MODE");
 
-        long NOW = System.currentTimeMillis();
-        SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Date mDate = new Date(NOW);
-        date = mFormat.format(mDate);
         adapter = new ArrayList<>();
 
         if(cur_MODE.equals("schedule"))
         {
             textView.setText("SCHEDULE");
-            getData("http://" + IP + "/mp/schedule.php?ID=" + cur_ID + "&NOW=" + date);
+            getData("http://" + IP + "/mp/schedule.php?ID=" + cur_ID);
         }
 
         return v;
@@ -108,13 +101,12 @@ public class ScheduleManagement extends Fragment {
             for (int i = 0; i < peoples.length(); i++)
             {
                 JSONObject c = peoples.getJSONObject(i);
-                String dbid = c.getString(TAG_.getTagAsk());
                 MailboxMessage mm;
 
-                String dback, dbmsg, dbans;
-                dback = c.getString(TAG_.getTagAck());
-                dbmsg = c.getString(TAG_.getTagMsg());
-                dbans = c.getString(TAG_.getTagAns());
+                String dbid = c.getString(TAG_.getTagAsk());
+                String dback = c.getString(TAG_.getTagAck());
+                String dbmsg = c.getString(TAG_.getTagMsg());
+                String dbans = c.getString(TAG_.getTagAns());
                 mm = new MailboxMessage(dbid, dback, dbmsg, dbans, cur_ID);
                 adapter.add(mm);
             }

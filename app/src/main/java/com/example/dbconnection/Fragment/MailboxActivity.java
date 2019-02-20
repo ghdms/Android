@@ -29,9 +29,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class MailboxActivity extends Fragment {
 
@@ -47,7 +45,7 @@ public class MailboxActivity extends Fragment {
     ArrayList<MailboxMessage> adapter;
     private MailboxMessage selected;
     boolean answer_query;
-    String date, answer_result, answer;
+    String answer_result, answer;
 
     @Nullable
     @Override
@@ -61,17 +59,12 @@ public class MailboxActivity extends Fragment {
         textView = (TextView)v.findViewById(R.id.Title);
         adapter = new ArrayList<>();
 
-        long NOW = System.currentTimeMillis();
-        SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Date mDate = new Date(NOW);
-        date = mFormat.format(mDate);
-
         answer_query = false;
 
         if(cur_MODE.equals("mail"))
         {
             textView.setText("MESSAGE");
-            getData("http://" + IP + "/mp/lovecall.php?ID=" + cur_ID + "&NOW=" + date);
+            getData("http://" + IP + "/mp/lovecall.php?ID=" + cur_ID);
 
             messages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -90,7 +83,7 @@ public class MailboxActivity extends Fragment {
                                     answer_query = true;
 
                                     Toast.makeText(getContext(),"수락 완료",Toast.LENGTH_LONG).show();
-                                    getData("http://" + IP + "/mp/answer.php?ASK_ID=" + ask_id + "&ACK_ID=" + ack_id + "&MESSAGE=" + msg + "&ANSWER=" + answer + "&DT=" + date);
+                                    getData("http://" + IP + "/mp/answer.php?ASK_ID=" + ask_id + "&ACK_ID=" + ack_id + "&MESSAGE=" + msg + "&ANSWER=" + answer);
                                 }
                             });
                     builder.setNegativeButton("거절",
@@ -103,7 +96,7 @@ public class MailboxActivity extends Fragment {
                                     answer_query = true;
 
                                     Toast.makeText(getContext(),"거절 완료",Toast.LENGTH_LONG).show();
-                                    getData("http://" + IP + "/mp/answer.php?ASK_ID=" + ask_id + "&ACK_ID=" + ack_id + "&MESSAGE=" + msg + "&ANSWER=" + answer + "&DT=" + date);
+                                    getData("http://" + IP + "/mp/answer.php?ASK_ID=" + ask_id + "&ACK_ID=" + ack_id + "&MESSAGE=" + msg + "&ANSWER=" + answer);
                                 }
                             });
                     builder.show();

@@ -20,8 +20,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class MyService extends Service
 {
@@ -35,7 +33,6 @@ public class MyService extends Service
     private static final String TAG_RESULTS = "result";
 
     JSONArray peoples = null;
-    String date = "";
 
     NotificationManager Notifi_M;
     NotificationCompat.Builder builder;
@@ -92,11 +89,7 @@ public class MyService extends Service
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (Notifi_M.getActiveNotifications().length == 0) { //이미 목록에 있으면 알림 x
                     //데이터베이스에서 캐치가 되면
-                    long NOW = System.currentTimeMillis();
-                    SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                    Date mDate = new Date(NOW);
-                    date = mFormat.format(mDate);
-                    getData("http://" + IP + "/mp/lovecall.php?ID=" + cur_ID + "&NOW=" + date);
+                    getData("http://" + IP + "/mp/lovecall.php?ID=" + cur_ID);
                 }
             }
         }
