@@ -8,12 +8,14 @@ public class MailboxMessage extends AppCompatActivity {
     private String ADD2 = "";
     private String ADD3 = "";
     private String MY = "";
+    private double SCORE = -1.0;
 
     public String getName() {return user_name;}
     public String getADD() {return ADD;}
     public String getADD2() {return ADD2;}
     public String getADD3() {return ADD3;}
     public String getMY() {return MY;}
+    public double getSCORE() {return SCORE;}
 
     public MailboxMessage(String un, String add2, String my){
         this.user_name = un;
@@ -39,5 +41,10 @@ public class MailboxMessage extends AppCompatActivity {
     public void setADD2(String a)
     {
         this.ADD2 = a;
+    }
+
+    public void setScore(double s)
+    {
+        this.SCORE = s;
     }
 }

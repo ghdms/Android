@@ -62,7 +62,12 @@ public class MailboxAdapter extends BaseAdapter {
         ImageView imageView = (ImageView)convertView.findViewById(R.id.imageId);
 
         TextView name = (TextView)convertView.findViewById(R.id.sender_name);
-        name.setText(data.get(position).getName() + " -> " + data.get(position).getADD() + "\n" + data.get(position).getADD2() + "\n" + data.get(position).getADD3());
+        String msg = data.get(position).getName() + " -> " + data.get(position).getADD() + "\n" + data.get(position).getADD2() + "\n" + data.get(position).getADD3();
+        if(data.get(position).getSCORE() != -1.0)
+        {
+            msg += "\n" + data.get(position).getSCORE();
+        }
+        name.setText(msg);
 
         String ID;
         if(data.get(position).getMY().equals(data.get(position).getName()))

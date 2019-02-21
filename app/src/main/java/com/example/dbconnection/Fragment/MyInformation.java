@@ -30,9 +30,13 @@ import com.example.dbconnection.Activity.SetImageActivity;
 import com.example.dbconnection.IpAddress;
 import com.example.dbconnection.MyService;
 import com.example.dbconnection.R;
+import com.example.dbconnection.TAG_;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -48,7 +52,7 @@ public class MyInformation extends Fragment {
     private String IP = IpAddress.getIP(); //"61.255.8.214:27922";
 
     private Button btnUpdateUserImage, btnUpdateUserInfo, btnUpdateService;
-    private TextView ID, KAKAO, SEX, TEXT, SERVICE;
+    private TextView ID, KAKAO, SEX, TEXT, SERVICE, AVG;
     private ImageView imageView;
 
     String cur_ID, cur_SEX, cur_KAKAO, cur_INTRO;
@@ -56,6 +60,7 @@ public class MyInformation extends Fragment {
     String PATH;
 
     String myJSON;
+    JSONArray peoples = null;
 
     boolean changing_intro;
 
@@ -86,6 +91,8 @@ public class MyInformation extends Fragment {
         KAKAO = (TextView) rootView.findViewById(R.id.my_KAKAO);
         TEXT = (TextView) rootView.findViewById(R.id.my_INTRO);
         SERVICE = (TextView) rootView.findViewById(R.id.my_SERVICE);
+        AVG = (TextView) rootView.findViewById(R.id.my_AVG);
+        getData("http://" + IP + "/mp/rate.php?ID=" + cur_ID);
 
         ID.setText("ID : " + cur_ID);
         SEX.setText("성별 : " + cur_SEX);
@@ -253,11 +260,31 @@ public class MyInformation extends Fragment {
                 else
                 {
                     myJSON = result;
+                    showList();
                 }
             }
         }
         GetDataJSON g = new GetDataJSON();
         g.execute(url);
+    }
+
+    protected void showList()
+    {
+        try {
+            JSONObject jsonObj = new JSONObject(myJSON);
+            peoples = jsonObj.getJSONArray(TAG_.getTagResults());
+
+            for (int i = 0; i < peoples.length(); i++)
+            {
+                JSONObject c = peoples.getJSONObject(i);
+                int dball = c.getInt(TAG_.getTagAll());
+                int dbmy = c.getInt(TAG_.getTagMy());
+                double dbavg = c.getDouble(TAG_.getTagAvg());
+                AVG.setText("전적 : " + dball + "전 " + dbmy + "승, 평점 : " + dbavg);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean ftpConnectAndUpload(String path)

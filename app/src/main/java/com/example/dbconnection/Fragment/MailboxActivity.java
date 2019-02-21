@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dbconnection.IpAddress;
@@ -36,7 +35,6 @@ public class MailboxActivity extends Fragment {
     private String IP = IpAddress.getIP(); //"61.255.8.214:27922";
     ListView messages;
     MailboxAdapter mailboxAdapter;
-    TextView textView;
     private String cur_ID, cur_MODE;
 
     String myJSON;
@@ -56,14 +54,12 @@ public class MailboxActivity extends Fragment {
         cur_MODE = getArguments().getString("MODE");
 
         messages = (ListView)v.findViewById(R.id.messages);
-        textView = (TextView)v.findViewById(R.id.Title);
         adapter = new ArrayList<>();
 
         answer_query = false;
 
         if(cur_MODE.equals("mail"))
         {
-            textView.setText("MESSAGE");
             getData("http://" + IP + "/mp/lovecall.php?ID=" + cur_ID);
 
             messages.setOnItemClickListener(new AdapterView.OnItemClickListener() {

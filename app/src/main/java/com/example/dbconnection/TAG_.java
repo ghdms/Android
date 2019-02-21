@@ -11,6 +11,10 @@ public class TAG_ {
     public static final String TAG_SEX = "SEX";
     public static final String TAG_KAKAO = "NAME";
     public static final String TAG_INTRO = "INTRO";
+    public static final String TAG_SCORE = "SCORE";
+    public static final String TAG_ALL = "ALL";
+    public static final String TAG_MY = "MY";
+    public static final String TAG_AVG = "AVG";
 
     public static String getTagId()
     {
@@ -60,5 +64,25 @@ public class TAG_ {
     public static String getTagIntro()
     {
         return TAG_INTRO;
+    }
+
+    public static String getTagScore()
+    {
+        return TAG_SCORE;
+    }
+
+    public static String getTagAll()
+    {
+        return TAG_ALL;
+    }
+
+    public static String getTagMy()
+    {
+        return TAG_MY;
+    }
+
+    public static String getTagAvg()
+    {
+        return TAG_AVG;
     }
 }

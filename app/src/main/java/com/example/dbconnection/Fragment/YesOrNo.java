@@ -11,10 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dbconnection.IpAddress;
@@ -39,12 +37,13 @@ public class YesOrNo extends Fragment {
     private String cur_ID, cur_MODE;
     private String myJSON;
     private ListView messages;
-    private TextView textView;
     private JSONArray peoples = null;
     MailboxAdapter mailboxAdapter;
 
     ArrayList<MailboxMessage> adapter;
     private MailboxMessage selected;
+
+    private boolean chk = false;
 
     @Nullable
     @Override
@@ -52,7 +51,6 @@ public class YesOrNo extends Fragment {
         ViewGroup v = (ViewGroup)inflater.inflate(R.layout.activity_yes_or_no,container,false);
 
         messages = (ListView)v.findViewById(R.id.messages);
-        textView = (TextView)v.findViewById(R.id.Title);
 
         cur_ID = getArguments().getString("myId");
         cur_MODE = getArguments().getString("MODE");
@@ -61,7 +59,6 @@ public class YesOrNo extends Fragment {
 
         if(cur_MODE.equals("record"))
         {
-            textView.setText("RECORD");
             getData("http://" + IP + "/mp/record.php?ID=" + cur_ID);
 
             messages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -71,12 +68,14 @@ public class YesOrNo extends Fragment {
                     if(selected.getADD3().equals("ok") && selected.getADD().equals(cur_ID))
                     {
                         final View layout = inflater.inflate(R.layout.ratingbar, null);
-                        final float[] tmp = {3};
+                        final double[] tmp = {3.0};
                         RatingBar rb = (RatingBar) layout.findViewById(R.id.ratingBar);
                         rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                             @Override
                             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                                tmp[0] = rating;
+                                tmp[0] = (double)rating;
+                                chk = true;
+                                getData("http://" + IP + "/mp/updateScore.php?ASK_ID=" + selected.getName() + "&ACK_ID=" + cur_ID + "&MESSAGE=" + selected.getADD2() + "&RATING=" + tmp[0]);
                                 //update couple set rating = tmp[0] where ASK_ID = selected.getName() and ACK_ID = cur_ID and message = selected.getADD2() and answer = 'ok' and dt < date;
                             }
                         });
@@ -121,8 +120,11 @@ public class YesOrNo extends Fragment {
 
             @Override
             protected void onPostExecute(String result) {
-                myJSON = result;
-                showList();
+                if(!chk) {
+                    myJSON = result;
+                    showList();
+                }
+                chk = false;
             }
         }
         GetDataJSON g = new GetDataJSON();
@@ -147,6 +149,9 @@ public class YesOrNo extends Fragment {
 
                 String dbmsg = c.getString(TAG_.getTagMsg());
                 mm.setADD2(dbmsg);
+
+                double dbscore = c.getDouble(TAG_.getTagScore());
+                mm.setScore(dbscore);
 
                 adapter.add(mm);
             }

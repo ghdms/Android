@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.dbconnection.IpAddress;
 import com.example.dbconnection.MailboxAdapter;
@@ -33,7 +32,6 @@ public class ScheduleManagement extends Fragment {
     private String cur_ID, cur_MODE;
     private String myJSON;
     private ListView messages;
-    private TextView textView;
     private JSONArray peoples = null;
     MailboxAdapter mailboxAdapter;
 
@@ -45,7 +43,6 @@ public class ScheduleManagement extends Fragment {
         ViewGroup v = (ViewGroup)inflater.inflate(R.layout.activity_yes_or_no,container,false);
 
         messages = (ListView)v.findViewById(R.id.messages);
-        textView = (TextView)v.findViewById(R.id.Title);
 
         cur_ID = getArguments().getString("myId");
         cur_MODE = getArguments().getString("MODE");
@@ -54,7 +51,6 @@ public class ScheduleManagement extends Fragment {
 
         if(cur_MODE.equals("schedule"))
         {
-            textView.setText("SCHEDULE");
             getData("http://" + IP + "/mp/schedule.php?ID=" + cur_ID);
         }
 

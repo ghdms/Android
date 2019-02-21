@@ -31,31 +31,37 @@
             android:layout_width="match_parent"
             style="@style/textBasic"
             android:text=""
-            android:textSize="20dp"/>
+            android:textSize="19dp"/>
         <TextView
             android:id="@+id/my_SEX"
             android:layout_width="match_parent"
             style="@style/textBasic"
             android:text=""
-            android:textSize="20dp"/>
+            android:textSize="19dp"/>
         <TextView
             android:id="@+id/my_KAKAO"
             android:layout_width="match_parent"
             style="@style/textBasic"
             android:text=""
-            android:textSize="20dp"/>
+            android:textSize="19dp"/>
         <TextView
             android:id="@+id/my_INTRO"
             android:layout_width="match_parent"
             style="@style/textBasic"
             android:text=""
-            android:textSize="20dp"/>
+            android:textSize="19dp"/>
+        <TextView
+            android:id="@+id/my_AVG"
+            android:layout_width="match_parent"
+            style="@style/textBasic"
+            android:text=""
+            android:textSize="19dp"/>
         <TextView
             android:id="@+id/my_SERVICE"
             android:layout_width="match_parent"
             style="@style/textBasic"
             android:text=""
-            android:textSize="20dp"/>
+            android:textSize="19dp"/>
     </LinearLayout>
 
     <LinearLayout

@@ -8,15 +8,6 @@
     android:orientation="vertical"
     tools:context=".Fragment.MailboxActivity">
 
-    <TextView
-        style="@style/textBasic"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:id="@+id/Title"
-        android:textSize="30dp"
-        android:textAlignment="center"/>
-
     <ListView
         android:id="@+id/messages"
         android:layout_width="match_parent"
